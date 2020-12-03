@@ -1,5 +1,5 @@
 /******************************************************************
-***limit the display to 20 products in woocommerce archive pages***
+***Limit the display to 20 products in woocommerce archive pages***
 *******************************************************************/ 
 add_filter( 'loop_shop_per_page', 'new_loop_shop_per_page', 20 );
 
