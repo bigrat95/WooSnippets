@@ -1,0 +1,28 @@
+ /*********************************************************************************
+ ** Add original price without the discount in the WooCommerce single order page **
+ **********************************************************************************/
+ 
+ // By default, WooCommerce only show the product price on the single order page including the discounts.
+ // It is not usefull when using an ERP or a thrid party accounting software where you need make sure the original price balance in your sytem.
+ // This is also not usefull whn you enter or fetch orders to an ERP
+ // This Snippet add another column beside the native price column showing the full original price 
+
+function action_woocommerce_admin_order_item_values( $null, $item, $absint ) {
+  $val = ('line_item' == $item->get_type() || 'shipping' == $item->get_type() ) ?  $item['subtotal'] : '&nbsp;';
+  $valdecimal = wc_format_decimal( $val );
+  ?>
+  <td class="item_fcost" data-sort-value="<?php echo $val; ?>">
+    <div class="view" style="font-weight: bold; text-align: right; padding-right: 10px;">
+      <?php if ($val>0) echo '$'; echo $valdecimal;?>
+    </div>
+  </td>
+  <?php
+};
+add_action( 'woocommerce_admin_order_item_values', 'action_woocommerce_admin_order_item_values', 10, 3 );
+
+
+function action_woocommerce_admin_order_item_headers( $order ) {
+  echo '<th class="item_fcost sortable" data-sort="float" style="text-align: right;">Original Cost</th>';
+};
+add_action( 'woocommerce_admin_order_item_headers', 'action_woocommerce_admin_order_item_headers', 10, 3 );
+
