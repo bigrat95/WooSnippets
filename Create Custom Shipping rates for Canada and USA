@@ -1,0 +1,48 @@
+/********************************************************************************************************
+*********************** Create Custom Shipping rates for Canada and USA**********************************
+*********************************************************************************************************/
+//#1 To use this snippet you must first create two shipping zone in Woo. One for US and the other for CA.
+
+//#2 Then create three Flat rate Shipping methods with your custom cost
+//ex: 
+//Flat rate 1 = 5.95
+//Flat rate 2 = 10.95
+//Flat rate 3 = 13.95
+
+//#3 Find the Shipping id by going to WooCommerce Settings > Shipping > Shipping zone 
+//   Right click on the method created and choose open in new tab. 
+//   Then look at the end of the url and use that id. 
+
+//Below Logic : if you purchase for less than 20$, you get the rate 1 = 5.95$ else if you purchase between 20$ and 50$, you pay Flat rate 2 = 10.95$, else you pay Flat rate 3 = 13.95$
+//I recommend addinng a Free shipping method on big orders ex: 200$
+
+
+//shipping rates for Canada
+add_filter( 'woocommerce_package_rates', 'woocommerce_tiered_shipping_canada', 10, 2 );
+function woocommerce_tiered_shipping_canada( $rates, $package ) {
+$threshold1 = 20; 
+$threshold2 = 50;
+if ( WC()->cart-> cart_contents_total < $threshold1 ) {
+unset( $rates['flat_rate:22'], $rates['flat_rate:24'] );
+} elseif ( WC()->cart-> cart_contents_total < $threshold2 ) {
+unset( $rates['flat_rate:21'], $rates['flat_rate:24'] ); 
+} else {
+unset( $rates['flat_rate:21'], $rates['flat_rate:22'] );
+} 
+return $rates; 
+}
+
+//shipping rates for USA
+add_filter( 'woocommerce_package_rates', 'woocommerce_tiered_shipping_usa', 10, 2 );
+function woocommerce_tiered_shipping_usa( $rates, $package ) {
+$threshold1 = 20; 
+$threshold2 = 50;
+if ( WC()->cart-> cart_contents_total < $threshold1 ) {
+unset( $rates['flat_rate:27'], $rates['flat_rate:28'] );
+} elseif ( WC()->cart-> cart_contents_total < $threshold2 ) {
+unset( $rates['flat_rate:26'], $rates['flat_rate:28'] ); 
+} else {
+unset( $rates['flat_rate:26'], $rates['flat_rate:27'] );
+} 
+return $rates; 
+}
