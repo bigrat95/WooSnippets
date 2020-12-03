@@ -1,5 +1,5 @@
 //add map price tag in front of the sale price in the website front-end
-function bd_sale_price_html( $price, $product ) {
+function obm_sale_price_html( $price, $product ) {
 
   if ( $product->is_on_sale() ) :
 
@@ -11,4 +11,4 @@ function bd_sale_price_html( $price, $product ) {
   endif;
 
 }
-add_filter( 'woocommerce_get_price_html', 'bd_sale_price_html', 100, 2 );
+add_filter( 'woocommerce_get_price_html', 'obm_sale_price_html', 100, 2 );
