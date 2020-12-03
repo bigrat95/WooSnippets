@@ -1,0 +1,9 @@
+// Customizes the WooCommerce product sorting options
+// Available options are: menu_order, rating, date, popularity, price, price-desc
+function custom_woocommerce_product_sorting( $orderby ) {
+// The following remove the rating sorting option;
+  unset($orderby["rating"]);
+  unset($orderby["popularity"]);
+  return $orderby;
+}
+add_filter( "woocommerce_catalog_orderby", "custom_woocommerce_product_sorting", 20 );
