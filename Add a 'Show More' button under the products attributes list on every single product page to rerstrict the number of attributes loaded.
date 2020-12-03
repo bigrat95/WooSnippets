@@ -1,0 +1,37 @@
+//Add a 'Show More' button under the products attributes list on every single product page to rerstrict the number of attributes loaded. 
+//User must then click on show more to view all the attributes
+//Work with WPMLLanguage code, you must replace the ICL_LANGUAGE_CODE ID to the respective language.
+
+add_action('wp_head','product_sm_js');
+function product_sm_js(){
+  if ( class_exists( 'WooCommerce' ) ){ ?>
+  <style type="text/css">
+    .shop_attributes tr, #less{
+      display: none; }    
+    </style>
+    <script type="text/javascript"> 
+      (function($){
+        $(document).ready(function(){
+          var x=10;
+          var size_li = $('table.shop_attributes tr').size();
+          $('table.shop_attributes').append('<br/> <button type="button" class="btn" id="more" style="background-color: #333333;color: #ffffff;"><?php if(ICL_LANGUAGE_CODE=='en'): ?>Show More<?php elseif(ICL_LANGUAGE_CODE=='fr'): ?>  Afficher Plus <?php endif;?></button>');
+          $('table.shop_attributes').append('<button type="button" class="btn" id="less" style="background-color: #333333;color: #ffffff;"><?php if(ICL_LANGUAGE_CODE=='en'): ?>Show less<?php elseif(ICL_LANGUAGE_CODE=='fr'): ?>Afficher Moins<?php endif;?></button>');
+          $('table.shop_attributes tr:lt('+x+')').show();
+          $('#more').click(function(){
+            var x = size_li;
+            $('table.shop_attributes tr:lt('+x+')').show(400);
+            $(this).hide();
+            $('#less').show();
+          });
+          $('#less').click(function(){
+            $('table.shop_attributes tr').hide(400);
+            var x = 10;
+            $('table.shop_attributes tr:lt('+x+')').show(400);
+            $(this).hide();
+            $('#more').show();
+          });
+        });
+      })(jQuery);
+    </script>
+    <?php  }
+  }
