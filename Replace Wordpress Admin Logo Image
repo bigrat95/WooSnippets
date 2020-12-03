@@ -1,0 +1,14 @@
+/************************************
+* Replace Wordpress Admin Logo Image*
+************************************/
+
+function my_login_logo_one() { 
+?> 
+<style type="text/css"> 
+  body.login div#login h1 a {
+    background-image: url(/wp-content/uploads/2018/03/logo-godin.png); 
+    padding-bottom: 30px; 
+  } 
+</style>
+<?php 
+} add_action( 'login_enqueue_scripts', 'my_login_logo_one' );
