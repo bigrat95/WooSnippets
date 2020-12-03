@@ -1,6 +1,6 @@
 //Add a 'Show More' button under the products attributes list on every single product page to rerstrict the number of attributes loaded. 
 //User must then click on show more to view all the attributes
-//Work with WPMLLanguage code, you must replace the ICL_LANGUAGE_CODE ID to the respective language.
+//Work with WPML Language code, you must replace the ICL_LANGUAGE_CODE ID to the respective language.
 
 add_action('wp_head','product_sm_js');
 function product_sm_js(){
