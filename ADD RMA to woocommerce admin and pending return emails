@@ -1,0 +1,85 @@
+/****************************************************************
+    ADD RMA to woocommerce admin and pending return emails
+ ****************************************************************/
+
+// Add a the metabox to Order edit pages
+add_action( 'add_meta_boxes', 'add_rma_meta_box' );
+function add_rma_meta_box(){
+    add_meta_box( 'rma_field', __('RMA','woocommerce'), 'add_rma_meta_box_content', 'shop_order', 'side', 'core' );
+}
+
+// The Metabox content
+function add_rma_meta_box_content(){
+    global $post;
+
+    $value = get_post_meta( $post->ID, '_rma_field_data', true );
+
+    echo '<input type="hidden" name="rma_meta_field_nonce" value="' . wp_create_nonce() . '">
+          <p style="border-bottom:solid 1px #eee;padding-bottom:13px;">
+          <input type="text" id="input-to-replace" style="width:250px;";" name="rma_data_name" value="'.$value.'"></p>
+         ';
+}
+
+
+// Save the field value from metabox content
+add_action( 'save_post_shop_order', 'save_rma_meta_box_field_value', 10, 1 );
+function save_rma_meta_box_field_value( $post_id ) {
+
+    if ( ! isset( $_POST[ 'rma_meta_field_nonce' ] ) ) {
+        return $post_id;
+    }
+
+    $nonce = $_REQUEST[ 'rma_meta_field_nonce' ];
+
+    if ( ! wp_verify_nonce( $nonce ) ) {
+        return $post_id;
+    }
+
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return $post_id;
+    }
+
+    if ( ! ( current_user_can( 'edit_shop_order', $post_id ) || current_user_can( 'edit_shop_order', $post_id ) ) ) {
+        return $post_id;
+    }
+
+    update_post_meta( $post_id, '_rma_field_data', sanitize_text_field( $_POST[ 'rma_data_name' ] ) );
+}
+
+// Display RMA info under shipping address
+add_action( 'woocommerce_admin_order_data_after_shipping_address', 'rma_custom_field_display_admin_order_meta', 10, 1 );
+function rma_custom_field_display_admin_order_meta( $order ){
+    $rma_value = $order->get_meta( '_rma_field_data' );
+    if ( ! empty($rma_value) ) {
+        echo '<p><strong>'. __("RMA", "woocommerce").':</strong> ' . $rma_value . '</p>';
+    }
+}
+
+// Display RMA info and urls on customer email
+add_action( 'woocommerce_email_after_order_table', 'add_rma_to_customer_complete_order_email', 20, 4 );
+function add_rma_to_customer_complete_order_email( $order, $sent_to_admin, $plain_text, $email ) {
+    if ( $sent_to_admin )
+            return; // Exit
+
+    $rma_value = $order->get_meta( '_rma_field_data' );
+
+    if ( ! empty($rma_value) ) {
+        $rma_url = 'https://www.postnord.se/en/online-tools/tools/track/track-and-trace';
+        $tracking_url = 'https://example.com/tracking-page/'.$rma_value;
+        $title        = __("RMA","woocommerce");
+        $message      = '<p><strong>'. __("RMA", "woocommerce").':</strong> ' . $rma_value . '</p>';
+
+        echo '<style>
+        .tracking table {width: 100%; font-family: \'Helvetica Neue\', Helvetica, Roboto, Arial, sans-serif;
+            color: #737373; border: 1px solid #e4e4e4; margin-bottom:8px;}
+        .tracking table td{text-align: left; border-top-width: 4px; color: #737373; border: 1px solid #e4e4e4; 
+            padding: 12px; padding-bottom: 4px;}
+        </style>
+        <div class="tracking">
+        <h2>' . $title . '</h2>
+        <table cellspacing="0" cellpadding="6">
+            <tr><td>'.$message.'</td></tr>
+        </table></div><br>';
+    }
+}
+
