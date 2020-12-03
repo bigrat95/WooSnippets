@@ -1,0 +1,19 @@
+/************************************
+    Show a NEW badge on new products
+ ************************************/
+
+/*
+ * Adds a new badge to product entry for any product added in the last 30 days.
+ * Simply add to child theme's functions.php file then add some css to your site to style it.
+ * If you want the badge to be a part of the "equal height" content then use 'PHP_INT_MAX' for the
+ * priority instead of 20
+ *
+ */
+add_action( 'woocommerce_before_shop_loop_item_title', function() {
+  $postdate      = get_the_time( 'Y-m-d' ); // Post date
+  $postdatestamp = strtotime( $postdate );  // Timestamped post date
+  $newness       = 120;                      // Newness in days
+  if ( ( time() - ( 60 * 60 * 24 * $newness ) ) < $postdatestamp ) {
+    echo '<div class="new-badge">' . esc_html__( 'New', 'total' ) . '</div>';
+  }
+}, 20 );
