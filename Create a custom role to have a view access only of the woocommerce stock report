@@ -1,0 +1,68 @@
+/*************************************************************************************
+******************************** View Stock Only Role*********************************
+*************************************************************************************/
+// Create a custom role to have a view access only of the woocommerce stock report
+// Update: New WooCommerce Analytics section must be disabled to prevent the user from accessing sensitive store sales data.
+
+add_role('view_stock_only', __(
+   'View Stock Only'),
+   array(
+       'read'            => true, // Allows a user to read
+       'create_posts'      => false, // Allows user to create new posts
+       'edit_posts'        => false, // Allows user to edit their own posts
+       'edit_others_posts' => false, // Allows user to edit others posts too
+       'publish_posts' => false, // Allows the user to publish posts
+       'manage_categories' => false, // Allows user to manage post categories
+       )
+);
+
+// get the role
+$role_view_stock_only = get_role( 'view_stock_only' );
+
+//add cap to the role
+$role_view_stock_only->add_cap( 'view_woocommerce_reports' );
+$role_view_stock_only->add_cap("view_woocommerce_reports");
+
+// remove cap to the role
+$role_view_stock_only->remove_cap('publish_posts');
+$role_view_stock_only->remove_cap("manage_woocommerce");
+$role_view_stock_only->remove_cap('read_pages'); 
+$role_view_stock_only->remove_cap('manage_categories');
+$role_view_stock_only->remove_cap("edit_product");
+$role_view_stock_only->remove_cap("read_product");
+$role_view_stock_only->remove_cap("delete_product");
+$role_view_stock_only->remove_cap("edit_products");
+$role_view_stock_only->remove_cap("edit_others_products");
+$role_view_stock_only->remove_cap("publish_products");
+$role_view_stock_only->remove_cap("read_private_products");
+$role_view_stock_only->remove_cap("delete_products");
+$role_view_stock_only->remove_cap("delete_private_products");
+$role_view_stock_only->remove_cap("delete_published_products");
+$role_view_stock_only->remove_cap("delete_others_products");
+$role_view_stock_only->remove_cap("edit_private_products");
+$role_view_stock_only->remove_cap("edit_published_products");
+$role_view_stock_only->remove_cap("manage_product_terms");
+$role_view_stock_only->remove_cap("edit_product_terms");
+$role_view_stock_only->remove_cap("delete_product_terms");
+$role_view_stock_only->remove_cap("assign_product_terms");
+
+
+
+// Restrict report view to stock only
+add_filter( 'woocommerce_admin_reports', 'restricts_wc_reports_tabs', 10, 1 );
+function restricts_wc_reports_tabs( $reports ) {
+    
+    if ( current_user_can( 'manage_woocommerce' ) ) {
+        // do not restrict WooCommerce admin
+        return $reports;
+    }
+    
+    unset( $reports['orders'] );
+    unset( $reports['customers'] );
+    unset( $reports['analytics'] );
+    // unset( $reports['stock'] );
+    unset( $reports['taxes'] );
+    
+    return $reports;
+}
+// end of restricts_wc_reports_tabs()
