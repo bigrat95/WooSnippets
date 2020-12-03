@@ -1,0 +1,22 @@
+/*****************************************
+ Add custom shipping providers dynamically
+ ****************************************/
+
+
+add_filter( 'wc_shipment_tracking_get_providers' , 'wc_shipment_tracking_add_custom_provider' );
+/**
+ * wc_shipment_tracking_add_custom_provider
+ *
+ * Adds custom provider to shipment tracking
+ * Change the country name, the provider name, and the URL (it must include the %1$s)
+ * Add one provider per line
+*/
+function wc_shipment_tracking_add_custom_provider( $providers ) {
+  
+  $providers['Canada']['UPS CA'] = 'https://www.ups.com/track?loc=fr_CA&tracknum=';
+  $providers['Canada']['DHL CA'] = 'http://international.dhl.ca/exp-fr/dhl_express/suivi_expedition.html?AWB=';
+  // etc...
+  
+  return $providers;
+  
+}
