@@ -1,0 +1,17 @@
+/************************************************************
+ * Adds SKUs and product images to WooCommerce order emails *
+ ************************************************************/
+function obm_modify_wc_order_emails( $args ) {
+    
+    // bail if this is sent to the admin
+    if ( $args['sent_to_admin'] ) {
+        return $args; 
+    }
+  
+    $args['show_sku'] = true;
+    $args['show_image'] = true;
+    $args['image_size'] = array( 250, 250 );
+ 
+    return $args;
+}
+add_filter( 'woocommerce_email_order_items_args', 'obm_modify_wc_order_emails' );
