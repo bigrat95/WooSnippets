@@ -1,0 +1,19 @@
+// Remove the add to cart button on single product pages of specific categories defined in an array
+// This Also work with WPML translated categories, you must add the category slug in the array
+
+  add_action( 'woocommerce_single_product_summary', 'hide_single_product_prices', 1 );
+
+  function hide_single_product_prices(){
+    global $product;
+    if ( has_term( array('electrics','electriques', 'basses', 'godin-acoustic', 'guitares', 'godin-acoustique', 'basses-fr', 'acoustiques' , 'acoustics', 'godinheritage', 'godinheritage-fr'), 'product_cat', $product->get_id() ) ) :
+
+
+//Hide add-to-cart button, quantity buttons (and attributes dorpdowns for variable products)
+      if( ! $product->is_type('variable') ){
+        remove_action('woocommerce_single_product_summary','woocommerce_template_single_add_to_cart', 30 );
+      
+      } else {
+        remove_action( 'woocommerce_single_variation', 'woocommerce_single_variation_add_to_cart_button', 20 );
+      }
+    endif;
+  }
