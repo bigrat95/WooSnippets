@@ -1,0 +1,10 @@
+
+/***************************************************************************************
+****** Remove thank you for selling with woocommerce in woocommerce backend footer ******
+****************************************************************************************/
+function remove_footer_admin (){
+// here you can echo your signature in the footer
+  echo'<span id="footer-thankyou">Developed by <a href="http://www.yoursite.com" targer="_blank">Your Name Here</a></span>';
+}
+
+add_filter('admin_footer_text', 'remove_footer_admin');
