@@ -1,0 +1,40 @@
+
+/*************************************************************************************
+  Hide unused shipping providers if you are using WooCommerce Shipment Tracking plugin
+ *************************************************************************************/
+
+
+add_filter( 'wc_shipment_tracking_get_providers', 'custom_shipment_tracking' );
+
+function custom_shipment_tracking( $providers ) {
+
+// define the shipping provider to unset below...
+
+    unset($tracking_number['custom_tracking_provider']);
+    unset($providers['Australia']);
+    unset($providers['Austria']);
+    unset($providers['Brazil']);
+    unset($providers['Belgium']);
+    unset($providers['Czech Republic']);
+    unset($providers['Finland']);
+    unset($providers['France']);   
+    unset($providers['Germany']);
+    unset($providers['Poland']);
+    unset($providers['Ireland']);
+    unset($providers['Italy']);
+    unset($providers['India']);
+    unset($providers['Netherlands']);
+    unset($providers['Romania']);
+    unset($providers['South African']);
+    unset($providers['Sweden']);
+    unset($providers['New Zealand']);
+    unset($providers['United Kingdom']);
+    unset($providers['United States']['Fedex']);
+    unset($providers['United States']['FedEx Sameday']);
+    unset($providers['United States']['USPS']);
+    unset($providers['United States']['OnTrac']);
+
+  
+
+    return $providers;
+}
