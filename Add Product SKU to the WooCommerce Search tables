@@ -1,0 +1,33 @@
+// Add support for product SKU to WooCommerce native search in order for the user to be able to search a specific product SKU on the front-end
+// Join posts and postmeta tables
+function obm_product_search_join( $join, $query ) {
+  if ( ! $query->is_main_query() || is_admin() || ! is_search() || ! is_woocommerce() ) {
+    return $join;
+  }
+
+  global $wpdb;
+
+  $join .= " LEFT JOIN {$wpdb->postmeta} obm_post_meta ON {$wpdb->posts}.ID = obm_post_meta.post_id ";
+
+  return $join;
+}
+
+add_filter( 'posts_join', 'obm_product_search_join', 10, 2 );
+
+
+// Modify the search query with posts_where.
+function obm_product_search_where( $where, $query ) {
+  if ( ! $query->is_main_query() || is_admin() || ! is_search() || ! is_woocommerce() ) {
+    return $where;
+  }
+
+  global $wpdb;
+
+  $where = preg_replace(
+    "/\(\s*{$wpdb->posts}.post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+    "({$wpdb->posts}.post_title LIKE $1) OR (obm_post_meta.meta_key = '_sku' AND obm_post_meta.meta_value LIKE $1)", $where );
+
+  return $where;
+}
+
+add_filter( 'posts_where', 'obm_product_search_where', 10, 2 );
