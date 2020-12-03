@@ -1,0 +1,9 @@
+//disable new woocmmerce 3.6 admin layout bar 
+//add_action('admin_head', 'my_custom_fonts');
+
+function my_custom_fonts() {
+  echo '<style>
+#woocommerce-embedded-root {
+} 
+</style>';
+}
