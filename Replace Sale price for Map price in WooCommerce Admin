@@ -1,0 +1,13 @@
+//Replace Sale price for Map price in WooCommerce Admin 
+
+add_filter('gettext', 'change_backend_product_sale_price', 100, 3 );
+function change_backend_product_sale_price( $translated_text, $text, $domain ) {
+  global $pagenow;
+
+  if ( is_admin() && 'woocommerce' === $domain && 'post.php' === $pagenow && isset( $_GET['post'] )
+    && 'product' === get_post_type( $_GET['post'] ) && 'Sale price' === $text  )
+  {
+    $translated_text =  __( 'Map price', $domain );
+  }
+  return $translated_text;
+}
