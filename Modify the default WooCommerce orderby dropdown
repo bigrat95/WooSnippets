@@ -1,0 +1,8 @@
+// Modify the default WooCommerce orderby dropdown
+// Options: menu_order, popularity, rating, date, price, price-desc
+// In this example I'm changing the default "Sort by newness" to "Sort by date: newest to oldest"
+function custom_woocommerce_catalog_orderby( $orderby ) {
+  $orderby["date"] = __('Sort by newly added', 'woocommerce');
+  return $orderby;
+}
+add_filter( "woocommerce_catalog_orderby", "custom_woocommerce_catalog_orderby", 20 );
