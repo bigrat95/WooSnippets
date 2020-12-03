@@ -1,0 +1,14 @@
+/***************************************************
+ Change the default shipment provider in WooCommerce
+ ***************************************************/
+
+
+add_filter( 'woocommerce_shipment_tracking_default_provider', 'custom_woocommerce_shipment_tracking_default_provider' );
+
+function custom_woocommerce_shipment_tracking_default_provider( $provider ) {
+  $provider = 'UPS'; // Replace this with the name of the provider. See line 42 in the plugin for the full list.
+
+  return $provider;
+}
+
+
