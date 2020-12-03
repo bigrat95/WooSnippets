@@ -1,0 +1,40 @@
+
+/*************************************************************************************
+******************************** Shop Manager Role************************************
+*************************************************************************************/
+// Edit User Role Shop Manager capabilities to give access to the orders only in WooCommerce backend
+
+// get the role object
+$role_shop_manager = get_role('shop_manager');
+
+//remove capabilities
+$role_shop_manager->remove_cap('delete_posts'); 
+$role_shop_manager->remove_cap('edit_pages');
+$role_shop_manager->remove_cap('publish_pages'); 
+$role_shop_manager->remove_cap('delete_pages'); 
+$role_shop_manager->remove_cap('read_pages'); 
+$role_shop_manager->remove_cap('import'); 
+$role_shop_manager->remove_cap('export'); 
+$role_shop_manager->remove_cap('upload_files');
+$role_shop_manager->remove_cap('manage_categories');
+$role_shop_manager->remove_cap("edit_product");
+$role_shop_manager->remove_cap("read_product");
+$role_shop_manager->remove_cap("delete_product");
+$role_shop_manager->remove_cap("edit_products");
+$role_shop_manager->remove_cap("edit_others_products");
+$role_shop_manager->remove_cap("publish_products");
+$role_shop_manager->remove_cap("read_private_products");
+$role_shop_manager->remove_cap("delete_products");
+$role_shop_manager->remove_cap("delete_private_products");
+$role_shop_manager->remove_cap("delete_published_products");
+$role_shop_manager->remove_cap("delete_others_products");
+$role_shop_manager->remove_cap("edit_private_products");
+$role_shop_manager->remove_cap("edit_published_products");
+$role_shop_manager->remove_cap("manage_product_terms");
+$role_shop_manager->remove_cap("edit_product_terms");
+$role_shop_manager->remove_cap("delete_product_terms");
+$role_shop_manager->remove_cap("assign_product_terms");
+$role_shop_manager->remove_cap("view_woocommerce_reports");
+$role_shop_manager->remove_cap("manage_woocommerce");
+
+$role_shop_manager->add_cap('edit_posts');
