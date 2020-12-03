@@ -1,0 +1,26 @@
+/************************************************************
+    Show message to contact us on special (remote) shipping regions
+ ************************************************************/
+
+//Replace the message in the cart total
+add_filter( 'woocommerce_cart_no_shipping_available_html', 'change_msg_no_available_shipping_methods', 10, 1  );
+add_filter( 'woocommerce_no_shipping_available_html', 'change_msg_no_available_shipping_methods', 10, 1 );
+function change_msg_no_available_shipping_methods( $default_msg ) {
+    $custom_msg = "Remote region, contact us for quotation - service@youremail.com";
+    if( empty( $custom_msg ) ) {
+      return $default_msg;
+    }
+    
+    return $custom_msg;
+}
+
+
+//Replace the message in the notification
+apply_filters( 'woocommerce_add_error' . $matched_zone_notice , $message );
+
+add_filter( 'woocommerce_add_error', function( $message ) {
+    if( $message == 'No shipping method has been selected. Please double check your address, or contact us if you need any help.' )
+        $message = 'Remote region, contact us for shipping quotation - service@youremail.com';
+
+    return $message;
+});
