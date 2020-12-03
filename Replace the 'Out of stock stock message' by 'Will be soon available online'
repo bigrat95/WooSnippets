@@ -1,0 +1,28 @@
+//Replace the 'Out of stock stock message' by 'Will be soon available online'
+// This snippet of code is also compatible with WPML ICL LANGUAGE CODE
+
+if(ICL_LANGUAGE_CODE=='en'):
+  add_filter( 'woocommerce_get_availability', 'obm_custom_get_availability', 1, 2);
+
+function dobm_custom_get_availability( $availability, $_product ) {
+
+// Change Out of Stock Text
+  if ( ! $_product->is_in_stock() ) {
+    $availability['availability'] = __('Will be soon available online', 'woocommerce');
+  }
+
+  return $availability;
+}
+elseif(ICL_LANGUAGE_CODE=='fr'): 
+  add_filter( 'woocommerce_get_availability', 'obm_custom_get_availability_fr', 1, 2);
+  function obm_custom_get_availability_fr( $availability, $_product ) {
+
+// Change Out of Stock Text
+  if ( ! $_product->is_in_stock() ) {
+    $availability['availability'] = __('Bientôt disponible en ligne', 'woocommerce');
+  }
+
+  return $availability;
+}
+   
+  endif;
