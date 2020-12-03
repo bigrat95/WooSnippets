@@ -1,0 +1,13 @@
+/*****************************************************************
+Use WooCommerce native product category description box under 
+Products -> Categories -> Category_Name -> Description and display
+the text on the respective single product category archive page.
+*******************************************************************/ 
+add_action( 'woocommerce_after_subcategory_title', 'custom_add_product_description', 12);
+function custom_add_product_description ($category) {
+  $cat_id        =    $category->term_id;
+  $prod_term    =    get_term($cat_id,'product_cat');
+  $description=    $prod_term->description;
+
+  echo '<div>'.$description.'</div>';
+}
