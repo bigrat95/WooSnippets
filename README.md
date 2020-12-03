@@ -1,0 +1,3 @@
+# WooSnippets
+Hepful snippets for WooCommerce. 
+Just Paste the snippets in your functions.php and follow the //instructions... 
