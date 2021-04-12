@@ -1,0 +1,49 @@
+
+/***************************************************************************************************
+          Remove add to cart on single product pages of guitars and basses categories if not in US
+ ***************************************************************************************************/
+
+//Does not work with caching enabled
+
+
+// Conditional function country code detection
+// @argument $code (string): country code restriction
+// @return boolean
+if( ! function_exists('is_from_country_code') ){
+
+    // ==> HERE below set your country code (Replace 'US' by yours)
+    function is_from_country_code( $code = 'US' ){
+        $location = new WC_Geolocation;
+        $user_ip = $location->get_ip_address();
+        $user_country_code = $location->geolocate_ip( $user_ip, false, false )['country'];
+        return $user_country_code == $code ? true : false;
+    }
+}
+
+
+
+// Replace "Add to cart" single product button and quantity by a custom text
+add_action( 'woocommerce_single_product_summary', 'Custom_single_add_to_cart', 1 );
+function Custom_single_add_to_cart(){
+    global $product;
+
+
+    if( is_from_country_code() || ( ! is_from_country_code() && ! ( has_term( array('guitars', 'guitares', 'mandolin' , 'mandoline', 'uke', 'uke-fr', 'm4', 'm4-fr'), 'product_cat', $product->get_id() ) ) ) )
+        return; // Continue for foreign countries and the specific products IDs
+
+    remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+    add_action('woocommerce_single_product_summary', function(){
+
+      if(ICL_LANGUAGE_CODE=='en'):
+
+        echo '<p class="stock out-of-stock">'.__('*Not available for online purchase in your country', 'woocommerce').'</p>';
+
+      elseif(ICL_LANGUAGE_CODE=='fr'): 
+
+        echo '<p class="stock out-of-stock">'.__('*Non disponible en ligne dans votre pays', 'woocommerce').'</p>';
+
+      endif;
+
+    }, 30);
+}
+
