@@ -1,0 +1,55 @@
+
+/****************************************************************
+      Buy X $ amount and get a free product added to your cart
+ ****************************************************************/
+
+// Add free product for specific cart subtotal
+add_action( 'woocommerce_before_calculate_totals', 'check_free_gifted_product' );
+function check_free_gifted_product( $cart ) {
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) )
+        return;
+
+    // Settings
+    $free_product_id   = 34076; //Insert the free product ID HERE
+    $targeted_subtotal = 50;    //Insert the targeted subtotal HERE
+
+    $cart_subtotal     = 0; // Initializing
+
+    // Loop through cart items (first loop)
+    foreach ( $cart->get_cart() as $cart_item_key => $cart_item ){
+        // When free product is is cart
+        if ( $free_product_id == $cart_item['variation_id'] ) {
+            $free_key = $cart_item_key;
+            $free_qty = $cart_item['quantity'];
+            $cart_item['data']->set_price(0); // Optionally set the price to zero
+        } else {
+            $cart_subtotal += $cart_item['line_total'] + $cart_item['line_tax'];
+        }
+    }
+
+    // If subtotal match and free product is not already in cart, add it
+    if ( ! isset($free_key) && $cart_subtotal >= $targeted_subtotal ) {
+        $cart->add_to_cart( $free_product_id );
+    }
+    // If subtotal doesn't match and free product is already in cart, remove it
+    elseif ( isset($free_key) && $cart_subtotal < $targeted_subtotal ) {
+        $cart->remove_cart_item( $free_key );
+    }
+    // Keep free product quantity to 1.
+    elseif ( isset($free_qty) && $free_qty > 1 ) {
+        $cart->set_quantity( $free_key, 1 );
+    }
+}
+
+// Display free gifted product price to zero on minicart
+add_filter( 'woocommerce_cart_item_price', 'change_minicart_free_gifted_item_price', 10, 3 );
+function change_minicart_free_gifted_item_price( $price_html, $cart_item, $cart_item_key ) {
+    $free_product_id   = 27;
+    
+    if( $cart_item['variation_id'] == $free_product_id ) {
+        return wc_price( 0 );
+    }
+    return $price_html;
+}
+
+
