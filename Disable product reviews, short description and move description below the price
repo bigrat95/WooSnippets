@@ -1,0 +1,36 @@
+//Just add this snippet in functions.php and don't forget to remove the h2 under woocommerce themes > your theme > woocommerce > single-product > tabs > description.php
+
+/************************************************************************************
+    Disable product reviews, short description and move description below the price
+ ************************************************************************************/
+
+
+// Disable product review and description (tab)
+function woo_remove_product_tabs($tabs) {
+  unset($tabs['description']);          // Remove Description tab
+
+  unset($tabs['reviews']);          // Remove Reviews tab
+
+  return $tabs;
+}
+
+add_filter( 'woocommerce_product_tabs', 'woo_remove_product_tabs', 98 );
+
+
+
+
+// Move Product Description out Tabs and add it below price
+function woocommerce_template_product_description() {
+wc_get_template( 'single-product/tabs/description.php' );
+}
+add_action( 'woocommerce_single_product_summary', 'woocommerce_template_product_description', 20 );
+
+
+
+// Remove short description
+remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+
+function woocommerce_template_single_excerpt() {
+        return;
+}
+
