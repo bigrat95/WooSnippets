@@ -1,0 +1,13 @@
+
+/*******************************************************************************************
+Move the WooCommerce Related Products and upsale up Within the After Product Summary Section 
+********************************************************************************************/
+add_action( 'init', 'move_upsells_after_related' );
+function move_upsells_after_related( ) {
+    remove_action('woocommerce_after_single_product_summary','woocommerce_output_related_products', 20);
+    add_action('woocommerce_after_single_product','woocommerce_output_related_products', 8);
+    remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+    add_action( 'woocommerce_after_single_product', 'woocommerce_upsell_display', 25 );
+}
+
+
