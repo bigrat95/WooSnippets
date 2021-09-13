@@ -2,8 +2,13 @@
 
 ul#menu-header-menu a {
     color: white;
-    font-size: 12px;
+    font-size: 15px;
     text-decoration: none;
+    letter-spacing: 2px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1em;
+    text-transform: initial;
 }
 ul.sub-menu {
     /* text-align: left !IMPORTANT; */
@@ -14,14 +19,34 @@ ul#menu-header-menu >li.menu-item {
     position: relative;
 }
 
+
+
+
+ul#menu-header-menu >li.menu-item >ul.sub-menu >li:hover > a {
+  
+    background-color: #FFFFFF;
+    color: #000000;
+
+
+}
+
+
+ul#menu-header-menu >li.menu-item a {
+padding-bottom: 12px;
+line-height: 17px;
+}
+
 ul.sub-menu {
     
-    background: rgb(0 0 0 / 60%);
-    padding: 12px;
+    background: #2f221e;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom:10px;
    
 }
 ul.sub-menu li {
     list-style: none;
+    padding: 5px;
 }
 @media (min-width: 1024px)   { 
  ul#menu-header-menu >li.menu-item:hover ul.sub-menu {
@@ -32,4 +57,31 @@ ul.sub-menu {
     display: none;
 }
 
+}
+
+/********* submenu hover ********/
+@media (min-width: 1024px)   { 
+ul.sub-menu, ul.sub-menu li {
+    padding: 0px !important;
+}
+ul#menu-header-menu >li.menu-item a {
+    padding-bottom: 12px;
+    line-height: 22px;
+    width: 100% !IMPORTANT;
+    display: block;
+    padding: 12px;
+}
+ul.sub-menu {
+    
+    margin-top: 0px;
+     
+}
+}
+
+/********* Hide Sub menu on mobile********/
+@media screen and (max-width: 600px) {
+ ul#menu-header-menu >li.menu-item >ul.sub-menu   {
+
+    display: none;
+  }
 }
