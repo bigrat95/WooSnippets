@@ -1,0 +1,35 @@
+/* WooCommerce Native Menu CSS simple */
+
+ul#menu-header-menu a {
+    color: white;
+    font-size: 12px;
+    text-decoration: none;
+}
+ul.sub-menu {
+    /* text-align: left !IMPORTANT; */
+    padding-left: 0px;
+}
+ul#menu-header-menu >li.menu-item {
+    padding-right: 2rem !important;
+    position: relative;
+}
+
+ul.sub-menu {
+    
+    background: rgb(0 0 0 / 60%);
+    padding: 12px;
+   
+}
+ul.sub-menu li {
+    list-style: none;
+}
+@media (min-width: 1024px)   { 
+ ul#menu-header-menu >li.menu-item:hover ul.sub-menu {
+    display: block;
+    position: absolute;
+}
+ul.sub-menu {
+    display: none;
+}
+
+}
