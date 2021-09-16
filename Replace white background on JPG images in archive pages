@@ -1,0 +1,12 @@
+ /*******Replace white background on JPG images in archive pages. Don't forget to create a DIV wrapper around the image in your product content template file and add below css to style
+the product image background/*******
+
+.woocommerce ul.products li.product a img {
+
+    mix-blend-mode: darken;
+}
+
+li.product >div.rbg-drop{
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+ */
