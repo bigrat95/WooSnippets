@@ -2,7 +2,7 @@
 ******** Upload PDF Manuals on all product pages and display all the uploaded value**************
 *************************************************************************************************/
 
-//First need to creat a pdf uploader field and assign it to product page in ACF
+//First need to create a pdf uploader field and assign it to product page in ACF
 
 // Secondly, add this code below to the custom template page to display all results and sort by newly added
 
