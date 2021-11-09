@@ -8,3 +8,29 @@ function ace_register_new_notice_type( $types ) {
   return $types;
 }
 add_filter( 'woocommerce_notice_types', 'ace_register_new_notice_type' );
+
+
+/*************
+Creating a Custom Notice Style in WooCommerce
+Previously I showed the three different types/styles of notices you can use within WooCommerce. If wanted you can also add your own style. To accomplish this you’d have to do three things.
+
+The first one is to create a new template file / copy an existing one to your (child) theme. I’d suggest copying one of the existing files in the woocommerce/templates/notices/path to use as a starting point. Add this as a new file in your theme directory under woocommerce/notices/warning.php.
+Change the class attribute in the file to woocommerce-message woocommerce-warning so we can use that in later on.
+
+Next you’d also have to add some styling to ensure the new notice is distinctive from the rest and actually looks the way you want. Here’s a sample of what I’m using
+
+.woocommerce-warning {
+    background-color: #e89b0e;
+}
+Lastly you’d have to add the new notice type to the notice types that are outputted automatically.
+
+function ace_register_new_notice_type( $types ) {
+    $types[] = 'warning';
+	
+	return $types;
+}
+add_filter( 'woocommerce_notice_types', 'ace_register_new_notice_type' );
+Now that the template exists and the styling is setup you can call your new notice style with the following code wc_add_notice( 'My warning notice', 'warning' );
+
+Note that the second argument should match the filename (minus the .php)
+*************/
