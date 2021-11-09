@@ -1,0 +1,10 @@
+
+/******************************************************************************
+ **** Create a custom notice color warning and add style in css for yellow ****
+ ******************************************************************************/
+function ace_register_new_notice_type( $types ) {
+    $types[] = 'warning';
+  
+  return $types;
+}
+add_filter( 'woocommerce_notice_types', 'ace_register_new_notice_type' );
