@@ -1,0 +1,63 @@
+  <!--navbar menu desktop-->
+    <header class="header-1">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+            <h3>design graphique</h3>
+          </div>
+          <div class="col-lg-10 col-md-9 px-0">
+            <ul class="">
+
+              <?php
+
+              // check if the repeater field has rows of data
+              if( have_rows('pages_header', 'option') ):
+
+                // loop through the rows of data
+                while ( have_rows('pages_header', 'option') ) : the_row();
+                  ?>   
+                  <?php 
+                  
+                  // Get parent value.
+                  $parent_title = get_sub_field('header_page_title', 'option'); 
+                  $parent_link = get_sub_field('header_page_link', 'option'); 
+                  ?>
+                  <li class="">
+                    <a href="<?php echo $parent_link; ?>" onclick="myFunction()">
+                      <?php echo $parent_title; ?> 
+                      </a> <?php   
+                      if( have_rows('header_sub_menu') ):?> 
+                        <ul class="">
+                          <?php
+                          
+                          // Loop over sub repeater rows.
+                          while( have_rows('header_sub_menu') ) : the_row();
+
+                          // Get sub value.
+                            $child_title = get_sub_field('header_page_submenu_title', 'option');
+                            $child_link = get_sub_field('header_page_submenu_link', 'option');
+                            ?> 
+                            <li><a href="<?php echo $child_link; ?>"><?php echo $child_title; ?></a></li>
+
+                            <?php
+                          endwhile;
+                          ?>
+                        </ul>
+                      <?php endif; 
+                      ?>
+                    </li>
+
+                    <?php
+                  endwhile;
+                else :
+                // no rows found
+                endif;
+                ?>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+
+
