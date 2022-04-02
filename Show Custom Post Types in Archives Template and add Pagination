@@ -1,0 +1,96 @@
+// Show Post Types in Archives Template and add Pagination
+// Don't Forget to enable Has Archives in CPT UI
+// Also, put this code in a file called archive-{your_custom_post_type}.php
+
+<?php
+
+get_header(); ?>
+
+
+<style>
+// simple style for pagination inline
+.page-links {
+    text-align: center;
+    margin: 10px -2px -4px;
+}
+
+.page-numbers {
+    display: inline-block;
+    line-height: 32px;
+    border: 1px solid #000;
+    padding: 0 13px;
+    border-radius: 0px;
+    max-width: 40px;
+    max-height: 40px;
+    color: #000!important;
+    text-decoration:none;
+    margin: 2px;
+}
+</style>
+
+<div class="video-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <p>video promo par BAC</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="boxes">
+  <div class="container-fluid">
+    <div class="row mt-5 px-0">
+
+      <?php 
+      $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+      $args = array(
+        'post_type'=>'etudiant', // Your post type name
+        'posts_per_page' => 24, // make sure it match wordpress number of posts not to create 404 error archive pages
+        'paged' => $paged,
+        );
+
+      $loop = new WP_Query( $args );
+      if ( $loop->have_posts() ) {
+        while ( $loop->have_posts() ) : $loop->the_post();
+      ?>
+
+        <div class="col-md-4 col-sm-3 p-3 img-overlay">
+          <img class="image img-fluid" src="<?php the_field('etudiant_image'); ?>" alt="img">
+          <a class="overlay" href="<?php the_permalink(); ?>">
+            <div class="black-txt">
+              <h3><?php the_title(); ?></h3>
+
+            </div>
+          </a>
+        </div>
+
+        <?php endwhile;
+
+        $total_pages = $loop->max_num_pages;
+
+        if ($total_pages > 1){
+
+          $current_page = max(1, get_query_var('paged'));
+          echo' <div class="col-12 text-center pt-2">';
+    
+          echo paginate_links(array(
+            'base' => get_pagenum_link(1) . '%_%',
+            'format' => '/page/%#%',
+            'current' => $current_page,
+            'total' => $total_pages,
+            'prev_text'    => __('<'),
+            'next_text'    => __('>'),
+          ));
+          echo' </div>';
+        }  
+      }
+
+      wp_reset_postdata();
+      ?> 
+
+    </div>
+  </div>
+</div>
+
+<?php get_footer(); ?>
