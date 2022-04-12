@@ -1,0 +1,43 @@
+<?php
+$featured_posts = get_field('relation_projets');
+
+//set counter to 0 and start the loop
+$counter = 0; if( $featured_posts ): ?>
+
+  <?php foreach( $featured_posts as $post ): 
+// Setup this post for WP functions (variable must be named $post).
+    setup_postdata($post); 
+ 
+// Increment the counter in the loop
+$counter++; 
+?>
+
+    <div class="nom-du-projet" id="projet-<?php echo $counter;?>">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h2><?php the_title(); ?></h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p><?php the_field( 'projets_presentation_de_lequipe' ); ?></p>
+          </div>
+          <div class="col-md-6">
+            <p><?php the_field( 'projets_produit' ); ?></p>
+          </div>
+          <div class="col-md-6">
+            <p><?php the_field( 'projets_entreprise' ); ?></p>
+          </div>
+          <div class="col-md-6">
+            <p><?php the_field( 'projets_demarche' ); ?></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <?php endforeach; ?>
+
+  <?php 
+// Reset the global post object so that the rest of the page works correctly.
+  wp_reset_postdata(); ?>
+<?php endif; ?>
