@@ -1,0 +1,56 @@
+
+/************************************************************************************************
+ * Rename Weight and Dimensions in the additional info attributes tab and move after attributes *
+ ************************************************************************************************/
+
+
+if(ICL_LANGUAGE_CODE=='en'):
+
+function change_woocommerce_display_product_attributes_weight_label( $product_attributes_weight, $product ){
+    if( isset( $product_attributes_weight['weight'] ) ){
+        $product_attributes_weight['weight']['label'] = __( 'Shipping Weight', 'woocommerce' );
+    }
+
+    return $product_attributes_weight;
+}
+add_filter( 'woocommerce_display_product_attributes', 'change_woocommerce_display_product_attributes_weight_label', 10, 2 );
+
+function change_woocommerce_display_product_attributes_dimensions_label( $product_attributes_dimensions, $product ){
+    if( isset( $product_attributes_dimensions['dimensions'] ) ){
+        $product_attributes_dimensions['dimensions']['label'] = __( 'Shipping Dimensions', 'woocommerce' );
+    }
+
+    return $product_attributes_dimensions;
+}
+add_filter( 'woocommerce_display_product_attributes', 'change_woocommerce_display_product_attributes_dimensions_label', 10, 2 );
+
+
+elseif(ICL_LANGUAGE_CODE=='fr'):
+
+function change_woocommerce_display_product_attributes_weight_label( $product_attributes_weight, $product ){
+    if( isset( $product_attributes_weight['weight'] ) ){
+        $product_attributes_weight['weight']['label'] = __( 'Poids de livraison', 'woocommerce' );
+    }
+
+    return $product_attributes_weight;
+}
+add_filter( 'woocommerce_display_product_attributes', 'change_woocommerce_display_product_attributes_weight_label', 10, 2 );
+
+function change_woocommerce_display_product_attributes_dimensions_label( $product_attributes_dimensions, $product ){
+    if( isset( $product_attributes_dimensions['dimensions'] ) ){
+        $product_attributes_dimensions['dimensions']['label'] = __( 'Dimensions de livraison', 'woocommerce' );
+    }
+
+    return $product_attributes_dimensions;
+}
+add_filter( 'woocommerce_display_product_attributes', 'change_woocommerce_display_product_attributes_dimensions_label', 10, 2 );
+
+endif;
+ 
+
+//Bring the shipping weight and dimensions at bottom while sorting attributes from A to Z
+add_filter( 'woocommerce_display_product_attributes', 'woocommerce_sort_product_attributes', 10, 2 );
+function woocommerce_sort_product_attributes ( $product_attributes, $product ) {
+    ksort( $product_attributes );
+    return $product_attributes;
+}
