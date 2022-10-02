@@ -1,0 +1,45 @@
+
+
+
+/**
+ * Copy WooCommerce product price to custom meta field.
+ * When a product is created or updated in the backend.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function vh_wc_copy_product_sales_price_into_custom_field( $post_id ) {
+    // Check & Validate the woocommerce meta nonce.
+    if ( ! ( isset( $_POST['woocommerce_meta_nonce'] ) || wp_verify_nonce( sanitize_key( $_POST['woocommerce_meta_nonce'] ), 'woocommerce_save_data' ) ) ) {
+        return;
+    }
+
+    $sale_price = isset( $_POST['_price'] ) ? wc_clean( wp_unslash( $_POST['_price'] ) ) : null;
+	
+    update_post_meta( $post_id, 'codisto_product_price_cad', wc_format_decimal( $sale_price ) );
+}
+add_action( 'woocommerce_process_product_meta', 'vh_wc_copy_product_sales_price_into_custom_field', 99 );
+
+add_action( 'save_post', 'add_value_on_update_product', 10, 3);
+
+function add_value_on_update_product($post_id, $post, $update){
+    if ($post->post_status != 'publish' || $post->post_type != 'product') {
+        return;
+    }
+	
+	// Check & Validate the woocommerce meta nonce.
+	
+    if ( ! ( isset( $_POST['woocommerce_meta_nonce'] ) || wp_verify_nonce( sanitize_key( $_POST['woocommerce_meta_nonce'] ), 'woocommerce_save_data' ) ) ) {
+		
+        return;
+    }
+
+    if (!$product = wc_get_product( $post )) {
+        return;
+    }
+	
+    $sale_price = isset( $_POST['_canada_sale_price'] ) ? wc_clean( wp_unslash( $_POST['_canada_sale_price'] ) ) : null; 
+    update_post_meta( $post_id, 'codisto_product_price_cad', wc_format_decimal( $sale_price ) ); 
+   
+}
