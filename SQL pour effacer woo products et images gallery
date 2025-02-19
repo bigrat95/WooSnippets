@@ -1,0 +1,13 @@
+
+
+
+DELETE FROM wp_posts 
+WHERE post_type = 'attachment' 
+AND post_mime_type LIKE 'image/%' 
+AND ID IN (SELECT meta_value FROM wp_postmeta WHERE meta_key = '_thumbnail_id');
+
+DELETE FROM wp_postmeta 
+WHERE meta_key = '_product_image_gallery';
+
+DELETE FROM wp_postmeta 
+WHERE meta_key IN ('_thumbnail_id', '_wp_attachment_metadata', '_wp_attached_file');
