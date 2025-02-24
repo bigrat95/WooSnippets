@@ -1,6 +1,19 @@
+//Runner ceci pour effacer les produits: 
+delete FROM `wp_posts` where post_type="product" or post_type="product_variation";
+delete pm  FROM `wp_postmeta` pm left join wp_posts p on pm.post_id = p.ID where p.ID is null;
 
+DELETE FROM wp_terms WHERE term_id IN (SELECT term_id FROM wp_term_taxonomy WHERE taxonomy LIKE 'pa_%');
+DELETE FROM wp_term_taxonomy WHERE taxonomy LIKE 'pa_%';
+DELETE FROM wp_term_relationships WHERE term_taxonomy_id not IN (SELECT term_taxonomy_id FROM wp_term_taxonomy);
+DELETE FROM wp_term_relationships WHERE object_id IN (SELECT ID FROM wp_posts WHERE post_type IN ('product','product_variation'));
+DELETE FROM wp_postmeta WHERE post_id IN (SELECT ID FROM wp_posts WHERE post_type IN ('product','product_variation'));
+DELETE FROM wp_posts WHERE post_type IN ('product','product_variation');
+DELETE pm
+FROM wp_postmeta pm
+LEFT JOIN wp_posts wp ON wp.ID = pm.post_id
+WHERE wp.ID IS NULL;
 
-
+//Runner ceci pour effacer les images: 
 DELETE FROM wp_posts 
 WHERE post_type = 'attachment' 
 AND post_mime_type LIKE 'image/%' 
