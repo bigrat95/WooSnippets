@@ -35,6 +35,27 @@ WHERE object_id IN (SELECT ID FROM wp_posts WHERE post_type IN ('product', 'prod
 -- Supprimer les taxonomies des marques
 DELETE FROM wp_term_taxonomy WHERE taxonomy = 'product_brand';
 
+
+
+
+// apres runner ceci aussi
+-- Supprimer les relations entre produits et marques
+DELETE FROM wp_term_relationships
+WHERE object_id IN (
+  SELECT ID FROM wp_posts WHERE post_type IN ('product', 'product_variation')
+);
+
+-- Supprimer les taxonomies 'brands'
+DELETE FROM wp_term_taxonomy
+WHERE taxonomy = 'brands';
+
+-- Supprimer les termes orphelins (si aucun autre taxonomy ne les utilise)
+DELETE FROM wp_terms
+WHERE term_id NOT IN (
+  SELECT term_id FROM wp_term_taxonomy
+);
+
+
 -- Supprimer les termes orphelins (marques)
 DELETE FROM wp_terms
 WHERE term_id NOT IN (SELECT term_id FROM wp_term_taxonomy);
