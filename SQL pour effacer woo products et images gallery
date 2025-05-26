@@ -24,3 +24,17 @@ WHERE meta_key = '_product_image_gallery';
 
 DELETE FROM wp_postmeta 
 WHERE meta_key IN ('_thumbnail_id', '_wp_attachment_metadata', '_wp_attached_file');
+
+
+
+// runner ceci pour aussi Supprimer aussi les marques
+-- Supprimer les relations des marques avec les produits
+DELETE FROM wp_term_relationships
+WHERE object_id IN (SELECT ID FROM wp_posts WHERE post_type IN ('product', 'product_variation'));
+
+-- Supprimer les taxonomies des marques
+DELETE FROM wp_term_taxonomy WHERE taxonomy = 'product_brand';
+
+-- Supprimer les termes orphelins (marques)
+DELETE FROM wp_terms
+WHERE term_id NOT IN (SELECT term_id FROM wp_term_taxonomy);
